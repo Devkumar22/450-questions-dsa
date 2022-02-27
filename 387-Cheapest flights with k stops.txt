@@ -1,0 +1,75 @@
+class Solution {
+public:
+    int findCheapestPrice(int n, vector<vector<int>>& flights, int src, int dst, int k) {
+        vector<vector<pair<int,int>>> adj(n);
+        vector<int> dist(n+1, INT_MAX);
+        vector<int> stops(n+1, INT_MAX);
+        
+        dist[src]=0;
+        stops[src]=0;
+        
+        for(auto x:flights)
+        {
+            adj[x[0]].push_back({x[1],x[2]}); //   [u,v,wt] to reach u->v wt weight is taken
+        }
+        priority_queue<tuple<int, int, int>, vector<tuple<int,int,int> >, greater<tuple<int,int,int> > > pq;
+        
+        
+        pq.push(make_tuple(0,src,0)); // [cost, node, stopsused]
+        
+        while(!pq.empty())
+        {
+            auto [curDist, curNode, curStops] = pq.top();
+            pq.pop();
+            
+            if(curNode == dst) return curDist;    // if dstination is reached return
+            if(curStops == k+1) continue;    //if stops are greater we will not consider this node path                                                    simply move to next in priorityqueue;
+            
+            for(auto &child: adj[curNode])
+            {
+                auto [nextNode, nextWeight]=child;
+                int nextDist= curDist + nextWeight;
+                int nextStops= curStops +1;
+                
+                if(nextDist < dist[nextNode] || nextStops < stops[nextNode])
+                {
+                    dist[nextNode] = nextDist;
+                    stops[nextNode] = nextStops; 
+                    pq.push(make_tuple(nextDist, nextNode, nextStops));
+                }
+            }
+        }
+        return -1;
+    }
+};
+// vector<vector<pair<int,int>>> adj(n);
+//         for(auto x:flights)
+//         {
+//             adj[x[0]].push_back({x[1],x[2]}); //   [u,v,wt] to reach u->v wt weight is taken
+//         }
+//         priority_queue<tuple<int, int, int>, vector<tuple<int,int,int> >, greater<tuple<int,int,int> > > pq;
+        
+//         pq.push(make_tuple(0,src,0)); // [cost, node, stopsused]
+        
+//         while(!pq.empty())
+//         {
+//             auto [cost, u, stops] = pq.top();
+//             // int cost=get<1>pq.top();
+//             // int u=pq.top().second;
+//             // int stops=pq.top().third;
+            
+//             pq.pop();
+            
+//             if(u==dst) return cost;    // if dstination is reached return
+//             if(stops > k) continue;    //if stops are greater we will not consider this node path simply move to next in priorityqueue;
+            
+//             for(auto child: adj[u])
+//             {
+//                 // int v=child.first;
+//                 // int w=child.second;
+//                 auto [v,w]=child;
+//                 pq.push(make_tuple(cost+w, v, stops+1));
+//             }
+//         }
+//         return -1;
+//     }
