@@ -1,0 +1,65 @@
+class Solution {
+public:
+    void traverseleft(Node *temp, vector<int> &v)
+    {
+        if(temp==NULL) return;
+        
+        if(temp->left) {v.push_back(temp->data);
+        
+            traverseleft(temp->left, v);
+        }
+        else if(temp->right)
+        {
+            v.push_back(temp->data);
+        
+            traverseleft(temp->right, v);
+        }
+    }
+    void traverseleaf(Node *temp, vector<int> &v)
+    {
+        if(!temp) return;
+        traverseleaf(temp->left, v);
+         if(!temp->left && !temp->right)
+         {   
+             v.push_back(temp->data);
+         }
+        
+        traverseleaf(temp->right, v);
+        
+    }
+    void traverseright(Node *temp, vector<int> &v)
+    {
+        if(!temp) return;
+        if(temp->right)
+        {
+            traverseright(temp->right, v);
+            v.push_back(temp->data);
+         
+        }
+        else if(temp->left)
+        {
+            traverseright(temp->left, v);
+            v.push_back(temp->data);
+         
+        }
+        
+        
+    }
+    
+    vector <int> boundary(Node *root)
+    {
+        
+        vector<int> v;
+        if(root==NULL) return v;
+        if(root->left || root->right) v.push_back(root->data);
+        
+        traverseleft(root->left, v);
+        
+        traverseleaf(root, v);
+        
+        
+        traverseright(root->right, v);
+        return v;
+        //Your code here
+    }
+};
