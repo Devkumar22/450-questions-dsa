@@ -1,0 +1,18 @@
+every vertex should have even no. of degrees in order to be euler circuit.
+
+bool isEularCircuitExist(int V, vector<int>adj[]){
+	    if(V==0) return 1;
+	    //if(!connectedGraph(V, adj))
+	       // return 0;
+	        
+	   int odd=0;
+	   for(int i=0;i<V;i++)
+	   {
+	       if(adj[i].size()%2 !=0)
+	            return 0;
+	   }
+	    
+	   return 1;
+	   //odd==2 || odd==0;    
+	    // Code here
+	}
