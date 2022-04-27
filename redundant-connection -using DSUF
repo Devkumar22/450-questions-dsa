@@ -1,0 +1,69 @@
+class Solution {
+public:
+    int find(int x, int parent[])
+    {
+        if(parent[x]==x)
+            return x;
+        
+        return parent[x]= find(parent[x], parent);
+    }
+    void Union(int x, int y, int parent[], int rank[], vector<int> &res)
+    {
+        int a = find(x,parent);
+        int b= find(y,parent);
+        
+        if(a!=b)
+        {
+            if(rank[a] > rank[b])
+            {
+                parent[b]=a;
+            }
+            else if(rank[a] < rank[b])
+            {
+                parent[a]=b;
+            }
+            else
+            {
+                rank[a]+=1;
+                parent[b]=a;
+            }
+        }
+        else
+        {
+            res.push_back(x);
+            res.push_back(y);
+            
+        }
+    }
+    vector<int> findRedundantConnection(vector<vector<int>>& edges) {
+        int n=edges.size();
+        int m=edges[0].size();
+        
+        int parent[n*m];
+        int rank[n*m];
+        
+        for(int i=0;i<n*m;i++)
+        {
+            parent[i]=i;
+            rank[i]=1;
+        }
+        
+        vector<int> res(4);
+        for(int i=0;i<n;i++)
+        {
+            int x=edges[i][0];
+            int y=edges[i][1];
+            Union(x,y,parent,rank,res);
+            if(res.size()>2)
+            {
+                int f=res[res.size()-2];
+                int s=res[res.size()-1];
+                res.clear();
+                res.push_back(f);
+                res.push_back(s);
+            }
+        }
+        
+        return res;
+    }
+};
