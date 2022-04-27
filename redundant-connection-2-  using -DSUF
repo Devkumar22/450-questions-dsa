@@ -1,0 +1,104 @@
+class Solution {
+public:
+    int find(int x, int parent[])
+    {
+        if(parent[x]==x)
+            return x;
+        
+        return parent[x]= find(parent[x], parent);
+    }
+    bool Union(int x, int y, int parent[], int rank[])
+    {
+        int a = find(x,parent);
+        int b= find(y,parent);
+        
+        if(a!=b)
+        {
+            if(rank[a] > rank[b])
+            {
+                parent[b]=a;
+            }
+            else if(rank[a] < rank[b])
+            {
+                parent[a]=b;
+            }
+            else
+            {
+                rank[a]+=1;
+                parent[b]=a;
+            }
+            return false;
+        }
+        else
+        {
+            return true; 
+        }
+        
+    }
+    
+    
+    vector<int> findRedundantDirectedConnection(vector<vector<int>>& edges) {
+        int n=edges.size();
+        int m=edges[0].size();
+        
+       
+        int blacklist1=-1, blacklist2=-1;
+        
+        
+        int parent[n+1];
+        int rank[n+1];
+        
+        int indegree[n+1] ;
+        memset(indegree, -1, sizeof(indegree));
+        for(int i=0;i<n;i++)
+        {
+            int u=edges[i][0];
+            int v=edges[i][1];
+            
+            if(indegree[v]==-1)
+            {
+                indegree[v]=i;
+                
+            }
+            else
+            {
+                blacklist1=i;
+                blacklist2=indegree[v];
+                break;
+            }
+        }
+        
+        for(int i=1;i<=n;i++)
+        {
+            parent[i]=i;
+            rank[i]=1;
+        }
+        
+        for(int i=0;i<edges.size();i++)
+        {
+            if(i==blacklist1)
+                continue;
+            
+            int u=edges[i][0];
+            int v=edges[i][1];
+            
+            bool flag=Union(u,v, parent,rank);
+            
+            if(flag==true)       //cycle present
+            {
+                if(blacklist1==-1){ //the node forming the cycle has no two parents .      -->case2
+                    return edges[i]; // we will return current node forming the cycle
+                }
+                else
+                {
+                    return edges[blacklist2]; // blacklist1 is removed stil cycle is there  -->case 3
+                }
+            }
+        }
+        
+        // it means we have blacklisted the right node which is not forming a cycle but has two parent nodes or two indegrees     ->case1 
+        return edges[blacklist1];  
+        
+    }
+};
+  
