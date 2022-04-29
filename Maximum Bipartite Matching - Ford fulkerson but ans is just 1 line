@@ -1,0 +1,23 @@
+Maximum Bipartite Matching 
+Medium Accuracy: 36.73% Submissions: 2166 Points: 4
+There are M job applicants and N jobs.  Each applicant has a subset of jobs that he/she is interseted in. Each job opening can only accept one applicant and a job applicant can be appointed for only one job. Given a matrix G where G(i,j) denotes ith applicant is interested in jth job. Find an assignment of jobs to applicant in such that as many applicants as possible get jobs.
+ 
+
+Example 1:
+
+Input: G = {{1,1,0,1,1},{0,1,0,0,1},
+{1,1,0,1,1}}
+Output: 3
+Explanation: There is one of the possible
+assignment-
+First applicant gets the 1st job.
+Second applicant gets the 2nd job.
+Third applicant gets the 3rd job.
+
+
+
+Answer:
+int maximumMatch(vector<vector<int>>&G){
+	    return min(G.size(),G[0].size());
+	    
+	}
