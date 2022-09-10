@@ -1,0 +1,52 @@
+#include <iostream>
+using namespace std;
+class Node{
+    public:
+    Node* left;
+    Node* right;
+    int data;
+    Node(int data)
+    {
+        this->data = data;
+        this->left = this->right = NULL;
+    }
+};
+
+static Node* root;
+
+Node* constructtree(Node* root, int data)
+{
+    if(root==NULL)
+    {
+        root=new Node(data);
+    }
+    if(root->data > data)
+    {
+        root->left = constructtree(root->left, data);
+    }
+    if(root->data < data)
+    {
+        root->right = constructtree(root->right, data);
+    }
+
+    return root;
+}
+void inorder(Node* root)
+{
+    if(!root) 
+        return;
+    inorder(root->left);
+    cout<< root->data << " ";
+    inorder(root->right);
+}
+int main() {
+    int n=7;
+    int arr[n] = {10, 5 , 1 ,7, 40, 50, 45};
+    for(int i=0;i<n;i++)
+    {
+        root = constructtree(root, arr[i]);
+    }
+    inorder(root);
+    
+    return 0;
+}
